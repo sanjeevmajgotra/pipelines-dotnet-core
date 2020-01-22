@@ -20,7 +20,14 @@ steps:
     projects: '**/*.csproj'
     arguments: '--configuration Release' 
 
-- script: dotnet test <test-project> --logger trx
+- task: VSTest@2
+  inputs:
+    testSelector: 'testAssemblies'
+    testAssemblyVer2: |
+      **\*test*.dll
+      !**\*TestAdapter.dll
+      !**\obj\**
+    searchFolder: '$(System.DefaultWorkingDirectory)'
 - task: PublishTestResults@2
   condition: succeededOrFailed()
   inputs:
